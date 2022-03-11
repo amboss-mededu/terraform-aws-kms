@@ -8,16 +8,11 @@ variable "name" {
 }
 variable "additional_permissions" {
   type = list(object(
-    {
-      name        = string
-      account_ids = list(string)
-      access = list(object(
         {
           identifiers = list(string)
           actions     = list(string)
           type        = string
       }))
-  }))
   description = "Additional permissions, for cross account key access"
   default = []
 }
