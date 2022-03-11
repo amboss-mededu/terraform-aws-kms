@@ -1,5 +1,5 @@
 data "aws_caller_identity" "current" {}
-data "aws_iam_policy_document" "service_access" {
+data "aws_iam_policy_document" "key_policy" {
   statement {
     effect = "Allow"
     principals {
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "service_access" {
 resource "aws_kms_key" "key" {
   enable_key_rotation     = true
   deletion_window_in_days = 30
-  policy                  = data.aws_iam_policy_document.service_access.json
+  policy                  = data.aws_iam_policy_document.key_policy.json
 }
 resource "aws_kms_alias" "alias" {
   name          = "alias/${var.target_account_name}-${var.name}"

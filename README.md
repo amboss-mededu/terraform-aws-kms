@@ -19,7 +19,7 @@ No modules.
 | [aws_kms_alias.alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.service_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -34,5 +34,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_alias"></a> [alias](#output\_alias) | n/a |
-| <a name="output_key"></a> [key](#output\_key) | n/a |
+| <a name="output_alias"></a> [alias](#output\_alias) | Alias id/arn and key id/arn map |
+| <a name="output_key"></a> [key](#output\_key) | Key id and arn map |
