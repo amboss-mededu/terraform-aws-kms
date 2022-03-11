@@ -1,9 +1,10 @@
+data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "service_access" {
   statement {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.account_id}:root"]
+      identifiers = ["arn:aws:iam::${var.target_account_id}:root"]
     }
     actions = [
       "kms:Decrypt",
@@ -26,7 +27,7 @@ data "aws_iam_policy_document" "service_access" {
     effect = "Deny"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.security_account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
     actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
     resources = ["*"]
@@ -35,13 +36,13 @@ data "aws_iam_policy_document" "service_access" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.security_account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
   }
   dynamic "statement" {
-    for_each = [for access in var.additional_permssions : {
+    for_each = [for access in var.additional_permissions : {
       identifiers = access.identifiers
       actions     = access.actions
       type        = access.type

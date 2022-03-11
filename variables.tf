@@ -18,7 +18,7 @@ variable "additional_permissions" {
           type        = string
       }))
   }))
-  description = "ADditional permissions, for cross account key access"
+  description = "Additional permissions, for cross account key access"
   default = []
 }
 variable "target_account_name" {
