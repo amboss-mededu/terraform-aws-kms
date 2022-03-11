@@ -1,5 +1,14 @@
 data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "key_policy" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
   dynamic "statement" {
     for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? []:[0]
     content {
@@ -37,15 +46,6 @@ data "aws_iam_policy_document" "key_policy" {
       actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
       resources = ["*"]
     }
-  }
-  statement {
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-    actions   = ["kms:*"]
-    resources = ["*"]
   }
   dynamic "statement" {
     for_each = [for access in var.additional_permissions : {
