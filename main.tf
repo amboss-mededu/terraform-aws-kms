@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "key_policy" {
       "kms:List*",
       "kms:Describe*",
       "kms:Sign",
-      "kms:CreateGrant",
+      "kms:CreateGrant"
     ]
     resources = ["*"]
   }
