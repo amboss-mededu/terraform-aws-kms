@@ -63,6 +63,6 @@ resource "aws_kms_key" "key" {
   policy                  = data.aws_iam_policy_document.service_access.json
 }
 resource "aws_kms_alias" "alias" {
-  name          = "alias/${var.name}"
+  name          = "alias/${var.target_account_name}-${var.name}"
   target_key_id = aws_kms_key.key.id
 }
