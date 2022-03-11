@@ -18,3 +18,6 @@ variable "additional_permissions" {
   }))
   default = []
 }
+variable "target_account_name" {
+  type = string
+}
