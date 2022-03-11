@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "service_access" {
       type        = "AWS"
       identifiers = ["arn:aws:iam::${var.security_account_id}:root"]
     }
-    actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*","kms:Sign", "kms:Verify"]
+    actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
     resources = ["*"]
   }
   statement {
