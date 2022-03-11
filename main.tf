@@ -1,36 +1,42 @@
 data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "key_policy" {
-  statement {
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.target_account_id}:root"]
+  dynamic "statement" {
+    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? []:[0]
+    content {
+      effect = "Allow"
+      principals {
+        type        = "AWS"
+        identifiers = ["arn:aws:iam::${var.target_account_id}:root"]
+      }
+      actions = [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncryptTo",
+        "kms:GenerateData*",
+        "kms:ReEncryptFrom",
+        "kms:RetireGrant",
+        "kms:RevokeGrant",
+        "kms:GenerateRandom",
+        "kms:Verify",
+        "kms:List*",
+        "kms:Describe*",
+        "kms:Sign",
+        "kms:CreateGrant"
+      ]
+      resources = ["*"]
     }
-    actions = [
-      "kms:Decrypt",
-      "kms:Encrypt",
-      "kms:ReEncryptTo",
-      "kms:GenerateData*",
-      "kms:ReEncryptFrom",
-      "kms:RetireGrant",
-      "kms:RevokeGrant",
-      "kms:GenerateRandom",
-      "kms:Verify",
-      "kms:List*",
-      "kms:Describe*",
-      "kms:Sign",
-      "kms:CreateGrant"
-    ]
-    resources = ["*"]
   }
-  statement {
-    effect = "Deny"
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+  dynamic "statement" {
+    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? []:[0]
+    content {
+      effect = "Deny"
+      principals {
+        type        = "AWS"
+        identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      }
+      actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
+      resources = ["*"]
     }
-    actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
-    resources = ["*"]
   }
   statement {
     effect = "Allow"
