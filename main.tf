@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "key_policy" {
     resources = ["*"]
   }
   dynamic "statement" {
-    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? []:[0]
+    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? [] : [0]
     content {
       effect = "Allow"
       principals {
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "key_policy" {
     }
   }
   dynamic "statement" {
-    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? []:[0]
+    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? [] : [0]
     content {
       effect = "Deny"
       principals {
