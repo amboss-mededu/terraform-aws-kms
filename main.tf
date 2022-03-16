@@ -1,16 +1,19 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+  count = var.create_key ? 1 : 0
+}
 data "aws_iam_policy_document" "key_policy" {
+  count = var.create_key ? 1 : 0
   statement {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current[0].account_id}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
   }
   dynamic "statement" {
-    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? [] : [0]
+    for_each = var.target_account_id == data.aws_caller_identity.current[0].account_id ? [] : [0]
     content {
       effect = "Allow"
       principals {
@@ -36,12 +39,12 @@ data "aws_iam_policy_document" "key_policy" {
     }
   }
   dynamic "statement" {
-    for_each = var.target_account_id == data.aws_caller_identity.current.account_id ? [] : [0]
+    for_each = var.target_account_id == data.aws_caller_identity.current[0].account_id ? [] : [0]
     content {
       effect = "Deny"
       principals {
         type        = "AWS"
-        identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+        identifiers = ["arn:aws:iam::${data.aws_caller_identity.current[0].account_id}:root"]
       }
       actions   = ["kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:Sign", "kms:Verify"]
       resources = ["*"]
@@ -65,11 +68,13 @@ data "aws_iam_policy_document" "key_policy" {
   }
 }
 resource "aws_kms_key" "key" {
+  count = var.create_key ? 1 : 0
   enable_key_rotation     = true
   deletion_window_in_days = 30
-  policy                  = data.aws_iam_policy_document.key_policy.json
+  policy                  = data.aws_iam_policy_document.key_policy[0].json
 }
 resource "aws_kms_alias" "alias" {
+  count = var.create_key ? 1 : 0
   name          = "alias/${var.target_account_name}-${var.name}"
-  target_key_id = aws_kms_key.key.id
+  target_key_id = aws_kms_key.key[0].id
 }
