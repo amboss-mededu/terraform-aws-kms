@@ -1,6 +1,5 @@
 data "aws_iam_policy_document" "kms_use" {
   statement {
-    sid    = "Allow KMS key for Use"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
@@ -19,7 +18,6 @@ resource "aws_iam_policy" "kms_use" {
 }
 data "aws_iam_policy_document" "kms_use_with_grant" {
   statement {
-    sid    = "Allow KMS key for Usage and subgrants"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
@@ -40,7 +38,6 @@ resource "aws_iam_policy" "kms_use_with_grant" {
 }
 data "aws_iam_policy_document" "kms_decrypt" {
   statement {
-    sid    = "Allow KMS key for Decryption"
     effect = "Allow"
     actions = [
       "kms:Decrypt",
