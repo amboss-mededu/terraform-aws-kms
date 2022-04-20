@@ -68,13 +68,13 @@ data "aws_iam_policy_document" "key_policy" {
   }
 }
 resource "aws_kms_key" "key" {
-  count = var.create_key ? 1 : 0
+  count                   = var.create_key ? 1 : 0
   enable_key_rotation     = true
   deletion_window_in_days = 30
   policy                  = data.aws_iam_policy_document.key_policy[0].json
 }
 resource "aws_kms_alias" "alias" {
-  count = var.create_key ? 1 : 0
+  count         = var.create_key ? 1 : 0
   name          = "alias/${var.target_account_name}-${var.name}"
   target_key_id = aws_kms_key.key[0].id
 }

@@ -3,7 +3,11 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = ">= 3.8.0"
-      configuration_aliases = [aws]
+      configuration_aliases = [aws, aws.target]
     }
   }
+}
+provider "aws" {}
+provider "aws" {
+  alias = "target"
 }

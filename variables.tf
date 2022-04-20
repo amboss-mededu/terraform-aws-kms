@@ -22,6 +22,6 @@ variable "target_account_name" {
   description = "Account name where the key would be used, it would added to all aliases"
 }
 variable "create_key" {
-  type = bool
+  type    = bool
   default = true
 }
