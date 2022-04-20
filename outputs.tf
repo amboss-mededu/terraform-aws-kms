@@ -16,5 +16,6 @@ output "policies" {
   value = {
     use            = aws_iam_policy.kms_use.arn
     use_with_grant = aws_iam_policy.kms_use_with_grant.arn
+    decrypt        = aws_iam_policy.kms_decrypt.arn
   }
 }
